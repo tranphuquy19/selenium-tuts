@@ -1,38 +1,33 @@
 package cases.auth;
 
 import base.BaseTest;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.LoginPage;
+import shared.Config;
 import shared.User;
 
 public class LoginTest extends BaseTest {
+    private LoginPage loginPage;
+
     public LoginTest () {
-        super("https://facebook.com");
+        super("wp-login.php");
     }
 
-    public void login(String email, String password) {
-        String txtEmail_css = "#email";
-        WebElement txtEmail = driver.findElement(By.cssSelector(txtEmail_css));
-        String txtPassword_css = "#pass";
-        WebElement txtPassword = driver.findElement(By.cssSelector(txtPassword_css));
-        String btnLogin_css = "#u_0_b";
-        WebElement btnLogin = driver.findElement(By.cssSelector(btnLogin_css));
-
-        txtEmail.sendKeys(email);
-        txtPassword.sendKeys(password);
-        btnLogin.submit();
+    @Test()
+    public void loginWithInvalidUser() throws InterruptedException {
+        loginPage = new LoginPage(this.driver);
+        loginPage.login("abc", "abc");
+        Thread.sleep(1_000);
+        Assert.assertNotEquals(driver.getCurrentUrl(), Config.BASE_URL + "wp-admin/");
     }
 
     @Test()
     public void loginWithValidUser() throws InterruptedException {
-        login(User.firstUserEmail, User.firstUserPassword);
-        Thread.sleep(10_000);
+        loginPage = new LoginPage(this.driver);
+        loginPage.login(User.firstUserEmail, User.firstUserPassword);
+        Thread.sleep(1_000);
+        Assert.assertEquals(driver.getCurrentUrl(), Config.BASE_URL + "wp-admin/");
     }
 
-//    @Test()
-//    public void loginWithInvalidUser() {
-//        login("", "");
-//        this.waitPageLoading();
-//    }
 }

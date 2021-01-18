@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.og/testng-1.0.dtd">
+
+<suite name="Suite 1" verbose="1">
+    <test name="Test 1">
+        <classes>
+            <class name="cases.auth.LoginTest">
+                <methods>
+                    <include name="loginWithValidUser"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
